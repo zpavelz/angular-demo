@@ -1,1 +1,109 @@
 /* You can add global styles to this file, and also import other style files */
+.head_separator {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.width_20p {
+    width: 20%;
+}
+.height_66p{
+    height: 66px;
+}
+.td_right_border {
+    border-right: solid 1px #dee2e6 !important;
+}
+.div_table_left {
+    float: left;
+    width: 8%;
+}
+.div_table_right{
+    float: right;
+    overflow-x: auto;
+    width: 86%;
+}
+.project_nav_href {
+    white-space: nowrap;
+    overflow: hidden;
+    height: 40px;
+    width: 129px;
+    text-overflow: ellipsis;
+}
+.new_date_input {
+    width: 230px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center;
+}
+.task_date_key {
+    cursor: text;
+    color: #212529;
+    font-weight: 500;
+    text-align: center;
+}
+.task_date_key:hover {
+    cursor: text;
+    color: #212529;
+    font-weight: 500;
+}
+.text_align_right {
+    text-align: right;
+}
+.text_align_left {
+    text-align: left;
+}
+.text_align_center {
+    text-align: center;
+}
+.text_align_center input {
+    width: 50px;
+    text-align: center;
+    display: inline;
+}
+.text_align_center .checkbox_container input {
+    width: auto;
+}
+.hidden_text_area {
+    display: none !important;
+}
+.form_container {
+    margin: 20px;
+}
+.margin_bottom_20p {
+    margin-bottom: 20px;
+}
+.fixed_alert {
+    position: fixed;
+    width: 60%;
+    z-index: 99999;
+    text-align: center;
+}
+.pointer {
+    cursor: pointer;
+}
+.loader_gif {
+    width: 10%;
+    margin: auto;
+    display: block;
+}
+.loader_container {
+    margin: 20px;
+}
+.form_popup {
+    position: fixed;
+    width: 30%;
+    height: auto;
+    background-color: #e9ffe1;
+    margin: auto;
+    left: 34%;
+    top: 34%;
+    z-index: 999;
+}
+.form_popup_task {
+    top: 20%;
+}
+.form_popup form {
+    padding: 20px;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

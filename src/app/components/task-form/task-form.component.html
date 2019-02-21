@@ -1,0 +1,30 @@
+<button *ngIf="isNew" class="btn btn-info btn-sm margin_bottom_20p" (click)="isFormAvailable = !isFormAvailable">
+    <i class='fas fa-file'></i>&nbsp;New task
+</button>
+<button *ngIf="!isNew" class="btn btn-success btn-sm" (click)="isFormAvailable = !isFormAvailable">
+    <i class='fas fa-edit'></i>
+</button>
+<div class="form_container form_popup form_popup_task" *ngIf="isFormAvailable">
+    <ng-container>
+        <form>
+            <div class="form-group">
+                <label>Name:</label>
+                <input class="form-control" type="text" [(ngModel)]="taskData.Name" name="name" placeholder="Name" value="{{taskData.Name}}">
+            </div>
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea class="form-control" [(ngModel)]="taskData.Description" value="{{taskData.Description}}" name="description" placeholder="Description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Start date: {{taskData.StartDate}}</label>
+                <input class="form-control" type="date" name="start_date" [(ngModel)]="taskData.StartDate" value="{{taskData.StartDate}}">
+            </div>
+            <div class="form-group">
+                <label>End date: {{taskData.EndDate}}</label>
+                <input class="form-control" type="date" name="end_date" [(ngModel)]="taskData.EndDate" value="{{taskData.EndDate}}">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" (click)="editTask()" >save</button>
+            <button type="submit" class="btn btn-danger btn-sm" (click)="isFormAvailable = !isFormAvailable" >cancel</button>
+        </form>
+    </ng-container>
+</div>

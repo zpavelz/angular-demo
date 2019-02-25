@@ -51,7 +51,9 @@ export class AuthGuardService implements CanActivate {
         if (email === this.getTestLoginValue() && password === this.getTestPasswordValue()) {
             return this._secureLogin(email, password);
         } else {
-            this._sApi.tryToLogin(email, password).subscribe(data => {
+            const res = this._sApi.tryToLogin(email, password);
+            if (!res) return false;
+            res.subscribe(data => {
                     return this._secureLogin(email, password);
                 },
                 err => this._sMsg.setError(err.error.Message),

@@ -9,13 +9,10 @@ export class RoleService {
         switch (roleID) {
             case RoleIds.ADMIN:
                 return 'Admin';
-                break;
             case RoleIds.EMPLOYEE:
                 return 'Employee';
-                break;
             case RoleIds.PM:
                 return 'Project Manager';
-                break;
         }
     }
     static getAdminID(): number {

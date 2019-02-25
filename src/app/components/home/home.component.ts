@@ -1,5 +1,6 @@
 import { Component      } from '@angular/core';
 import { DataService    } from '../../services/data.service';
+import { MsgService     } from '../../services/msg.service';
 
 @Component({
     selector: 'app-home',
@@ -18,7 +19,7 @@ export class HomeComponent {
     tasksData:              object[];
     datesPeriodList:        string[];
     private _generationInProgress: boolean;
-    constructor(private _sData: DataService) {
+    constructor(private _sData: DataService, private _sMsg: MsgService) {
         this._generationInProgress = false;
         this.processedProjectIDs    = [];
         this.datesPeriodList        = [];
@@ -66,7 +67,9 @@ export class HomeComponent {
                 if ((Number(index) + 1) === Number(this.processedProjectIDs.length)) {
                     this.getTasksData();
                 }
-            });
+            },
+                err => this._sMsg.setError(err.error.Message)
+            );
         });
     }
     getTasksData() {
@@ -90,7 +93,9 @@ export class HomeComponent {
                         this.projectsDataTemp = [];
                     }, 3000);
                 }
-            });
+            },
+                err => this._sMsg.setError(err.error.Message)
+            );
         });
     }
     isProjectsDataLoaded() {

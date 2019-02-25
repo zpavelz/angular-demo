@@ -48,7 +48,9 @@ export class DashboardComponent implements OnInit {
         this._sData.getTasksForOneProjectByID(prjID).subscribe(data => {
             this.tasksList = data;
             this._tempTask = this.getClearTask(data[Object.keys(data)[0]]);
-        });
+        },
+            err => this._sMsg.setError(err.error.Message)
+        );
     }
     getTaskByID(taskID: number): InfTask {
         const tasksKeys = Object.keys(this.tasksList);
@@ -73,10 +75,15 @@ export class DashboardComponent implements OnInit {
     moveTask(taskID: number, statusID: number) {
         const task = this.getTaskByID(taskID);
         task.StatusId = statusID;
-        this._sData.editTask(task, null
-        ).subscribe(r => {
-            this._sMsg.setSuccess('Task "' + task.Name + '" moved to "' + TaskStatusService.getNameByID(statusID) + '"');
-        });
+        const res = this._sData.editTask(task, null
+        );
+        if (!res) return false;
+        res.subscribe(
+            r => {
+                this._sMsg.setSuccess('Task "' + task.Name + '" moved to "' + TaskStatusService.getNameByID(statusID) + '"');
+            },
+            err => this._sMsg.setError(err.error.Message)
+        );
     }
     updateTasksData(data: InfTask) {
         const tsKeys = Object.keys(this.tasksList);
@@ -94,10 +101,14 @@ export class DashboardComponent implements OnInit {
     }
     deleteTask(taskID: number, taskName: string) {
         if (!confirm('Are you sure to delete task ' + taskName + '?')) return false;
-        this._sData.deleteTaskByID(taskID).subscribe(r => {
-            this._sMsg.setSuccess('Task ' + taskName + ' deleted successfully');
-            this.tasksList = this.removeTaskFromListByID(taskID);
-        });
+        const res = this._sData.deleteTaskByID(taskID);
+        if (!res) return false;
+        res.subscribe(r => {
+                this._sMsg.setSuccess('Task ' + taskName + ' deleted successfully');
+                this.tasksList = this.removeTaskFromListByID(taskID);
+            },
+            err => this._sMsg.setError(err.error.Message)
+        );
     }
     getTaskStatuses() {
         return TaskStatusService.getList();

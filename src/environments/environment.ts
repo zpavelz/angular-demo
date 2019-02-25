@@ -6,7 +6,6 @@ export const environment = {
 export const apiConfig = {
     key: '',
     url: ''
-
 };
 
 export const testCredentials = {

@@ -3,6 +3,7 @@ import { ApiService } from './api.service';
 import { MsgService } from './msg.service';
 
 import { InfProject } from '../interfaces/project.interface';
+import {Observable} from "rxjs/index";
 
 @Injectable({
     providedIn: 'root'
@@ -39,7 +40,9 @@ export class DataService {
     getProjectByID(prjID) {
         this._sApi.getProject(prjID).subscribe(project => {
             this.projectObj = project;
-        });
+        },
+            err => this._sMsg.setError(err.error.Message)
+        );
     }
     /**
      * Get tasks just for one project
@@ -91,17 +94,17 @@ export class DataService {
             return this._sMsg.setError('Name should have more than 3 symbols');
         }
         if (data.Description.length <= 10) {
-            return this._sMsg.setError('Name should have more than 10 symbols');
+            return this._sMsg.setError('Description should have more than 10 symbols');
         }
         data.StartDate = new Date(data.StartDate).toISOString();
         data.EndDate = new Date(data.EndDate).toISOString();
         return this._checkEventAPI(this._sApi.putTask(data), 'Task was ' + (data.Id > 0 ? 'edited' : 'added'));
     }
-    private _checkEventAPI(apiResult, msgSuccess: string = null) {
+    private _checkEventAPI(apiResult, msgSuccess: string = null): Observable<any> {
         if (!this._sMsg.hasErrors()) {
             if (msgSuccess) this._sMsg.setSuccess(msgSuccess);
             return apiResult;
         }
-        return false;
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 import { Component, Input, Output , EventEmitter } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { DataService    } from '../../services/data.service';
+import { MsgService     } from '../../services/msg.service';
 
 @Component({
     selector: 'app-time-form',
@@ -15,11 +16,13 @@ export class TimeFormComponent {
     @Input() oldComment;
     @Output() myEvent = new EventEmitter<object>();
     isFormAvailable: boolean;
-    constructor(private _sData: DataService) {
+    constructor(private _sData: DataService, private _sMsg: MsgService) {
         this.isFormAvailable = false;
     }
     addHoursForTask(hours, comment): any {
-        this._sData.editTimeSheet(this.tsID, Number(hours.value), Number(this.taskKey), this.tSheetKey, comment.value).subscribe(r => {
+        const res = this._sData.editTimeSheet(this.tsID, Number(hours.value), Number(this.taskKey), this.tSheetKey, comment.value);
+        if (!res) return false;
+        res.subscribe(r => {
             hours.value = '';
             comment.value = '';
             const eData = {
@@ -31,7 +34,9 @@ export class TimeFormComponent {
                 comment: r.Comment
             };
             this.myEvent.emit(eData);
-        });
+        },
+            err => this._sMsg.setError(err.error.Message)
+        );
         this.isFormAvailable = false;
     }
     canAddHours() {

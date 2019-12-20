@@ -1,0 +1,21 @@
+<button (click)="isFormAvailable = !isFormAvailable" class="btn btn-light">+</button>
+<div class="form_popup" *ngIf="isFormAvailable">
+    <div class="alert alert-info" role="alert" *ngIf="!canAddHours()" style="margin: 20px">
+        <p class="mb-0">Unfortunately You can't add time-sheets for future dates</p>
+        {{closePopup()}}
+    </div>
+    <form *ngIf="canAddHours()">
+        <div class="form-group text_align_left">
+            <input type="text" value="{{oldHours}}" placeholder="0" #additionalHours class="form-control" name="add_hours_value" maxlength="2">
+            <span>&nbsp;hours</span>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" #commentData rows="3" name="add_comment_value" placeholder="Comment">{{oldComment}}</textarea>
+        </div>
+        <button
+                (click)="addHoursForTask(additionalHours, commentData)"
+                class="btn btn-success btn-sm"
+        >save</button>
+        <button (click)="isFormAvailable = !isFormAvailable" class="btn btn-danger btn-sm">cancel</button>
+    </form>
+</div>

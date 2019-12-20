@@ -1,0 +1,45 @@
+<div class="container">
+
+    <h1 class="text-center">{{projectName}}</h1>
+
+    <div class="alert alert-info">
+        <div>For changing task status You can use drag-drop</div>
+    </div>
+
+    <div class="clearfix"></div>
+    <app-task-form
+            [taskData]="tempTask"
+            [isNew]="true"
+            (myEvent)="updateTasksData($event)"
+    ></app-task-form>
+    <div class="clearfix"></div>
+
+    <div *ngFor="let status of getTaskStatuses() | keyvalue">
+        <h3>{{status.value}} tasks</h3>
+        <ul class="list-group list-group-flush" [dragula]='"tasksList"' [attr.data-status-key]="status.key">
+            <ng-container *ngFor="let task of getTaskList() | tasksPipe: status.key">
+                <ng-container *ngIf="task.Id > 0">
+                    <li
+                            [attr.data-task-id]="task.Id"
+                            class="list-group-item pointer"
+                    >
+                        <div>
+                            <div class="float-left">{{task.Name}} [{{task.Id}}]</div>
+                            <div class="float-right">
+                                <app-task-form
+                                        [taskData]="task"
+                                        [isNew]="false"
+                                        (myEvent)="updateTasksData($event)"
+                                ></app-task-form>
+                                <button class="btn btn-danger btn-sm" (click)="deleteTask(task.Id, task.Name)">
+                                    <i class='fas fa-trash-alt'></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ng-container>
+            </ng-container>
+        </ul>
+    </div>
+
+</div>

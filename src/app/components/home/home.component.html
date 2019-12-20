@@ -1,0 +1,103 @@
+<div class="container loader_container" *ngIf="!isProjectsDataLoaded()">
+    <img class="loader_gif" src="assets/loading.gif">
+</div>
+<div class="container" *ngIf="isProjectsDataLoaded()">
+    <div class="div_table_left">
+        <table class="table table-borderless table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Timesheets</th>
+            </tr>
+            </thead>
+            <ng-container *ngFor="let project of projectsData | keyvalue">
+                <thead class="thead-light">
+                <tr *ngIf="project.key > 0">
+                    <th scope="col" colspan="10">
+                        <a routerLink="/project/{{project.key}}" class="nav-link project_nav_href" >{{project.value.Name}}</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let task of project.value.tasksIDs | keyvalue ">
+                    <td class="width_20p height_66p" scope="row">
+                        <div class="project_nav_href text_align_right">{{tasksData[task.key].Name}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="width_20p height_66p" scope="row">Total</th>
+                </tr>
+                </tbody>
+            </ng-container>
+        </table>
+    </div>
+    <div class="div_table_right">
+        <table class="table table-borderless table-hover">
+            <thead>
+            <tr>
+                <th class="text_align_center td_right_border">
+                    <i (click)="makeDateStepLeft()" class="fas fa-chevron-left pointer"></i>
+                </th>
+                <th class="text_align_center td_right_border" *ngFor="let dateKey of datesPeriodList">
+                    {{convertDateKey(dateKey)}}
+                </th>
+                <th class="text_align_center td_right_border">
+                    <i (click)="makeDateStepRight()" class="fas fa-chevron-right pointer"></i>
+                </th>
+            </tr>
+            </thead>
+            <ng-container *ngFor="let project of projectsData | keyvalue">
+                <thead class="thead-light">
+                <tr *ngIf="project.key > 0">
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col" *ngFor="let dateKey of datesPeriodList">
+                        <a class="nav-link task_date_key" >{{convertDateKey(dateKey)}}</a>
+                    </th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let task of project.value.tasksIDs | keyvalue ">
+                    <td class="text_align_center td_right_border height_66p">&nbsp;</td>
+                    <ng-container *ngFor="let dateKey of datesPeriodList">
+                        <td class="text_align_center td_right_border height_66p">
+                            <input type="text" value="{{
+                            (timeSheets[dateKey] && timeSheets[dateKey][project.key] && timeSheets[dateKey][project.key][task.key])
+                                ? timeSheets[dateKey][project.key][task.key].loggedTime
+                                : null
+                                }}"
+                                   class="form-control" disabled="disabled"
+                                   title="{{(tsComments[dateKey] && tsComments[dateKey][project.key])
+                                                ? tsComments[dateKey][project.key][task.key]
+                                                : null}}"
+                            >
+                            <app-time-form
+                                    [tsID]="((timeSheets[dateKey] && timeSheets[dateKey][project.key] && timeSheets[dateKey][project.key][task.key])
+                                        ? timeSheets[dateKey][project.key][task.key].loggedTime
+                                        : 0)"
+                                    [taskKey]="task.key"
+                                    [tSheetKey]="dateKey"
+                                    [projectKey]="project.key"
+                                    [oldComment]="((tsComments[dateKey] && tsComments[dateKey][project.key])
+                                                ? tsComments[dateKey][project.key][task.key]
+                                                : null)"
+                                    [oldHours]="((timeSheets[dateKey] && timeSheets[dateKey][project.key] && timeSheets[dateKey][project.key][task.key])
+                                ? timeSheets[dateKey][project.key][task.key].loggedTime
+                                : null)"
+                                    (myEvent)="updateTableData($event)"
+                            ></app-time-form>
+                        </td>
+                    </ng-container>
+                    <td class="text_align_center td_right_border height_66p">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="text_align_center height_66p font-weight-bold">&nbsp;</td>
+                    <td class="text_align_center height_66p font-weight-bold" *ngFor="let dateKey of datesPeriodList">
+                        {{getHoursSum(dateKey, project.key)}}
+                    </td>
+                    <td class="text_align_center height_66p font-weight-bold">&nbsp;</td>
+                </tr>
+                </tbody>
+            </ng-container>
+        </table>
+    </div>
+</div>
